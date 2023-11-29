@@ -18,7 +18,7 @@ class GPT(LLM):
         self.max_tokens = max_tokens
         self.sleep_time = sleep_time
         logger.critical(f'Using OPENAI {openai_name.upper()}')
-        logger.critical(f'OPENAI-API-Key= {os.environ["OPENAI_API_KEY"]}')
+        # logger.critical(f'OPENAI-API-Key= {os.environ["OPENAI_API_KEY"]}')
 
     @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(5))
     def generate_text(self, prompt, max_new_tokens=10, choice_only=False):
