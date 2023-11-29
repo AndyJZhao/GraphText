@@ -1,5 +1,5 @@
 # Introduction
-Source code for GraphText: Graph Reasoning in Text Space.
+Source code for [GraphText: Graph Reasoning in Text Space](https://arxiv.org/abs/2310.01089).
 
 # Steps to reproduce
 
