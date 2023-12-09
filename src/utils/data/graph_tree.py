@@ -64,12 +64,8 @@ class GraphTree:
                 if len(content) > 0:
                     current_dict[name_alias.get(field, field)] = str(content)
 
-        if self.style == 'json':
-            graph_str = json.dumps(self.tree_dict, indent=4)
-        elif self.style == 'xml' or self.style == 'xml_wo_text':
+        if self.style == 'xml':
             graph_str = dict2xml(self.tree_dict, wrap="information", indent="\t")
-            if 'wo_text' in self.style:
-                graph_str = re.sub(r'<.*?>', '', graph_str)
             # Post-processing continuous feature
             cont_indices = extract_indices(graph_str)
             if len(cont_indices) > 0:  # Process continuous feature to encode
@@ -80,15 +76,6 @@ class GraphTree:
                     placeholder = f"<{row.attr_type}> {placeholder} </{row.attr_type}>"
                     graph_str = graph_str.replace(cont_field_str_template.format(index=index), placeholder)
             assert len(extract_indices(graph_str)) == 0
-        elif self.style == 'flatten' or self.style == 'xml_wo_text_wo_order':
-            graph_str = str([self.text[row.attr_type][row.nodes] for i, row in self.df.iterrows()])
-            graph_str = dict2xml({'feature_list': graph_str}, wrap="information", indent="\t")
-        elif self.style == 'random_flatten':
-            graph_list = [self.text[row.attr_type][row.nodes] for i, row in self.df.iterrows()]
-            import random
-            random.shuffle(graph_list)
-            graph_str = str(graph_list)
-            graph_str = dict2xml({'feature_list': graph_str}, wrap="information", indent="\t")
         else:
             raise ValueError(f'Unsupported prompt style {self.style}')
         return graph_str
